@@ -1,0 +1,752 @@
+[
+  {
+    "question": "A quoi faire attention lorsqu'on choisit un système de base de données ?",
+    "subject": "BDD",
+    "all_responses": [
+      "La définition d'un schéma",
+      "La rapidité de lecture/écriture",
+      "La différenciation des accés",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "A quoi sert Docker-Compose ?",
+    "subject": "Automation",
+    "all_responses": [
+      "A déployer plusieurs containers en même temps",
+      "A répertorier les images publiques de containers",
+      "A créer sa propre image Docker",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "A déployer plusieurs containers en même temps",
+      "A répertorier les images publiques de containers"
+    ]
+  },
+  {
+    "question": "A way to handle imbalanced datasets is",
+    "subject": "Machine Learning",
+    "all_responses": [
+      "Filtering",
+      "Under sampling",
+      "Over sampling"
+    ],
+    "correct_responses": [
+      "Under sampling",
+      "Over sampling"
+    ]
+  },
+  {
+    "question": "Are every datasets worth a Data Science project ?",
+    "subject": "Data Science",
+    "all_responses": [
+      "Yes.",
+      "No.",
+      "If it's big enough, yes."
+    ],
+    "correct_responses": [
+      "No."
+    ]
+  },
+  {
+    "question": "Cassandra et HBase sont des bases de données",
+    "subject": "BDD",
+    "all_responses": [
+      "relationnelles",
+      "orientées graphe",
+      "orientées objet",
+      "orientées colonne"
+    ],
+    "correct_responses": [
+      "orientées colonne"
+    ]
+  },
+  {
+    "question": "Classification",
+    "subject": "Machine Learning",
+    "all_responses": [
+      "Is used when the target we aim to predict is continuous.",
+      "Is used when the target we aim to work on is discrete.",
+      "Is not a method needing artificial intelligence techniques."
+    ],
+    "correct_responses": [
+      "Is used when the target we aim to work on is discrete."
+    ]
+  },
+  {
+    "question": "Dans Airflow, le DAG répertorie",
+    "subject": "Automation",
+    "all_responses": [
+      "Tous ces points",
+      "Les tâches à effectuer",
+      "L'enchaînement des tâches à effectuer",
+      "Les actions à prendre en cas d'échecs"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Dans Hadoop, les combiners permettent",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "de mieux distribuer la charge lors de la phase de Shuffle",
+      "de limiter le nombre de valeurs émises lors de l'étape de Reduce",
+      "de combiner les entrées et les sorties"
+    ],
+    "correct_responses": [
+      "de limiter le nombre de valeurs émises lors de l'étape de Reduce"
+    ]
+  },
+  {
+    "question": "Dans Hadoop, les partitioners permettent",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "de mieux distribuer la charge lors de la phase de Shuffle",
+      "de limiter le nombre de valeurs émises lors de l'étape de Reduce",
+      "de combiner les entrées et les sorties"
+    ],
+    "correct_responses": [
+      "de mieux distribuer la charge lors de la phase de Shuffle"
+    ]
+  },
+  {
+    "question": "Dans le cas d'une architecture distribuée, le théorème CAP nous oblige à choisir entre",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Partition et Disponibilité",
+      "Cohérence et Disponibilité",
+      "Partition et Cohérence"
+    ],
+    "correct_responses": [
+      "Cohérence et Disponibilité"
+    ]
+  },
+  {
+    "question": "Dans le paradigme MapReduce, les combiners servent à ",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Accélérer les calculs",
+      "Équilibrer la charge de travail des reducers",
+      "Diminuer le nombre de valeurs à émettre des mappers aux reducers",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Diminuer le nombre de valeurs à émettre des mappers aux reducers"
+    ]
+  },
+  {
+    "question": "Dans le paradigme MapReduce, les partitioners servent à ",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Accélérer les calculs",
+      "Équilibrer la charge de travail des reducers",
+      "Diminuer le nombre de valeurs à émettre des mappers aux reducers",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Équilibrer la charge de travail des reducers"
+    ]
+  },
+  {
+    "question": "Dans un problème de fraude bancaire, la précision est-elle une métrique adaptée?\n",
+    "subject": "Classification",
+    "all_responses": [
+      "Oui puisque c’est un problème de classification.",
+      "Non car le déséquilibre des deux classes ne permet pas une amélioration significative de cette métrique"
+    ],
+    "correct_responses": [
+      "Non car le déséquilibre des deux classes ne permet pas une amélioration significative de cette métrique"
+    ]
+  },
+  {
+    "question": "Data science is ...",
+    "subject": "Data Science",
+    "all_responses": [
+      "A scientific approach of data acquisition.",
+      "A set of empirical approachs used to define theoretical formulas and /or equations thanks to data.",
+      "A set of techniques and tools used to get value out of data."
+    ],
+    "correct_responses": [
+      "A set of techniques and tools used to get value out of data."
+    ]
+  },
+  {
+    "question": "De donner une meilleure métrique dans toutes les situations",
+    "subject": "Classification",
+    "all_responses": [
+      "D’identifier facilement des proportions d’observations en fonction de leur probabilité",
+      "D’être plus facilement interprétable ",
+      "De donner une meilleure métrique dans toutes les situations"
+    ],
+    "correct_responses": [
+      "D’identifier facilement des proportions d’observations en fonction de leur probabilité"
+    ]
+  },
+  {
+    "question": "Des containers Docker peuvent communiquer entre eux grâce à",
+    "subject": "Docker",
+    "all_responses": [
+      "des networks",
+      "des communications ",
+      "des volumes"
+    ],
+    "correct_responses": [
+      "des networks"
+    ]
+  },
+  {
+    "question": "Docker est utilisé",
+    "subject": "Docker",
+    "all_responses": [
+      "pour améliorer la puissance de calcul",
+      "pour développer rapidement et mettre en production facilement",
+      "pour améliorer les capacités d'une base de données"
+    ],
+    "correct_responses": [
+      "pour développer rapidement et mettre en production facilement"
+    ]
+  },
+  {
+    "question": "Docker permet de persister des changements",
+    "subject": "Docker",
+    "all_responses": [
+      "Non",
+      "Oui à condition d'utiliser des volumes",
+      "Oui"
+    ],
+    "correct_responses": [
+      "Oui à condition d'utiliser des volumes"
+    ]
+  },
+  {
+    "question": "Docker-compose est ",
+    "subject": "Docker",
+    "all_responses": [
+      "un système qui permet de lancer plusieurs containers d'un coup",
+      "un système d'orchestration de containers",
+      "un répertoire d'images Docker"
+    ],
+    "correct_responses": [
+      "un système qui permet de lancer plusieurs containers d'un coup"
+    ]
+  },
+  {
+    "question": "DockerHub est",
+    "subject": "Docker",
+    "all_responses": [
+      "un système qui permet de lancer plusieurs containers d'un coup",
+      "un système d'orchestration de containers",
+      "un répertoire d'images Docker"
+    ],
+    "correct_responses": [
+      "un répertoire d'images Docker"
+    ]
+  },
+  {
+    "question": "En utilisant Flask, on permet à un utilisateur ou à une machine d'utiliser un service avec ",
+    "subject": "Automation",
+    "all_responses": [
+      "Python",
+      "Java",
+      "HTTP",
+      "SQL"
+    ],
+    "correct_responses": [
+      "HTTP"
+    ]
+  },
+  {
+    "question": "Est-ce que les algorithmes de classification permettent de donner une probabilité d’appartenance à une classe plutôt que simplement l’étiquette?",
+    "subject": "Classification",
+    "all_responses": [
+      "Non, ce problème est un problème de régression",
+      "Oui, c’est en général la base de tous les algorithmes de classification"
+    ],
+    "correct_responses": [
+      "Oui, c’est en général la base de tous les algorithmes de classification"
+    ]
+  },
+  {
+    "question": "Hadoop permet de ",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Faire des calculs",
+      "Stocker des données",
+      "Orchestrer des jobs MapReduce",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Hadoop streaming est un outil qui permet",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "De faire du traitement de données en temps réel ",
+      "De stocker des vidéos sur un système distribué",
+      "De stocker plusieurs copies d'un jeu de données",
+      "De faire des jobs MapReduce avec n'importe quel langage de programmation"
+    ],
+    "correct_responses": [
+      "De faire des jobs MapReduce avec n'importe quel langage de programmation"
+    ]
+  },
+  {
+    "question": "Hive est ",
+    "subject": "Sytèmes distribués",
+    "all_responses": [
+      "Une librairie de Hadoop",
+      "Un système de gestion de bases de données relationnelles",
+      "Une abstraction de SGDB relationnelles"
+    ],
+    "correct_responses": [
+      "Une abstraction de SGDB relationnelles"
+    ]
+  },
+  {
+    "question": "Hive permet",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "d'abstraire une base de données relationnelle",
+      "de classer les documents par ordre d'importance",
+      "d'orchestrer des clusters de machine"
+    ],
+    "correct_responses": [
+      "d'abstraire une base de données relationnelle"
+    ]
+  },
+  {
+    "question": "Its applications are ...",
+    "subject": "Data Science",
+    "all_responses": [
+      "Close to unlimited and find use cases in almost every known fields where data can be collected.",
+      "Limited to a small amount of fields and use cases."
+    ],
+    "correct_responses": [
+      "Limited to a small amount of fields and use cases."
+    ]
+  },
+  {
+    "question": "Kafka est système de messagerie",
+    "subject": "Streaming de données",
+    "all_responses": [
+      "Tous ces points",
+      "distribué",
+      "asynchrone",
+      "publication/abonnement"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Kafka est un système de messagerie",
+    "subject": "Streaming de données",
+    "all_responses": [
+      "Publication/Abonnement + Synchrone",
+      "Orienté queue + Asynchrone",
+      "Publication/Abonnement + Asynchrone",
+      "Orienté queue+ Synchrone"
+    ],
+    "correct_responses": [
+      "Publication/Abonnement + Asynchrone"
+    ]
+  },
+  {
+    "question": "L'architecture lambda présente les couches",
+    "subject": "Streaming de données",
+    "all_responses": [
+      "temps réel",
+      "Tous ces points",
+      "service",
+      "batch"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "L'utilisation de systèmes distrubués permet",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "D'accélérer les calculs ",
+      "De sécuriser l'accés aux données",
+      "Tous ces points",
+      "D'augmenter facilement la capacité de stockage"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "La sensibilité est définie par (V vrai, F faux, P positif, N négatif)  ",
+    "subject": "Classification",
+    "all_responses": [
+      "VP / (VP + FN)",
+      "(VP + VN) / (VP + VN + FN + FP)",
+      "VN / (VN + FP)"
+    ],
+    "correct_responses": [
+      "VP / (VP + FN)"
+    ]
+  },
+  {
+    "question": "La spécificité est définie par (V vrai, F faux, P positif, N négatif)  ",
+    "subject": "Classification",
+    "all_responses": [
+      "VP / (VP + FN)",
+      "(VP + VN) / (VP + VN + FN + FP)",
+      "VN / (VN + FP)"
+    ],
+    "correct_responses": [
+      "VN / (VN + FP)"
+    ]
+  },
+  {
+    "question": "Le théorème CAP oppose",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Capacité, Vitesse, Distribution",
+      "Disponibilité, Cohérence, Distribution",
+      "Cohérence, Adaptabilité, Puissance"
+    ],
+    "correct_responses": [
+      "Disponibilité, Cohérence, Distribution"
+    ]
+  },
+  {
+    "question": "Lequel de ces problème est un problème de classification",
+    "subject": "Classification",
+    "all_responses": [
+      "Segmentation clients",
+      "Labellisation d’une image",
+      "Calcul de prix optimal",
+      "Prédiction du départ d’un client",
+      "Génération automatique de mots",
+      "Prédiction du caractère bénin d’une tumeur",
+      "Modélisation des flux d’air autour d’un réacteur",
+      "Reconnaissance d’objet",
+      "Estimation du prix d’une oeuvre d’art"
+    ],
+    "correct_responses": [
+      "Prédiction du départ d’un client",
+      "Reconnaissance d’objet",
+      "Prédiction du caractère bénin d’une tumeur",
+      "Génération automatique de mots"
+    ]
+  },
+  {
+    "question": "Lors de l'étape de Map d'un wordcount appliqué à la phrase \"cette phrase est une phrase\", les valeurs émises sont",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "5, 0, 0, 0, 0",
+      "1, 2, 1, 1",
+      "1, 1, 1, 1, 1, 1"
+    ],
+    "correct_responses": [
+      "1, 1, 1, 1, 1, 1"
+    ]
+  },
+  {
+    "question": "MongoDB et CouchDB sont des bases de données",
+    "subject": "BDD",
+    "all_responses": [
+      "relationnelles",
+      "orientées graphe",
+      "orientées objet",
+      "orientées colonne"
+    ],
+    "correct_responses": [
+      "orientées objet"
+    ]
+  },
+  {
+    "question": "OrientDB et Neo4J sont des bases de données",
+    "subject": "BDD",
+    "all_responses": [
+      "relationnelles",
+      "orientées graphe",
+      "orientées objet",
+      "orientées colonne"
+    ],
+    "correct_responses": [
+      "orientées graphe"
+    ]
+  },
+  {
+    "question": "Overfitting is",
+    "subject": "Machine Learning",
+    "all_responses": [
+      "When the model takes too much time to train on the data.",
+      "When the model fits too much the training data and don’t generalize enough.",
+      "When the algorithm can't store anymore the results of the fitting process."
+    ],
+    "correct_responses": [
+      "When the model fits too much the training data and don’t generalize enough."
+    ]
+  },
+  {
+    "question": "Pig permet",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "D'accélérer les calculs effectués sur Hadoop ",
+      "D'orchestrer Hive",
+      "Tous ces points",
+      "De rendre l'écriture de jobs MapReduce plus simple et plus intuitive"
+    ],
+    "correct_responses": [
+      "De rendre l'écriture de jobs MapReduce plus simple et plus intuitive"
+    ]
+  },
+  {
+    "question": "Pour Hive, partitioner consiste à ",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "Découper les tables selon les valeurs d'une variable",
+      "Découper les tables par colonnes",
+      "Découper les tables en block de taille pré-définie"
+    ],
+    "correct_responses": [
+      "Découper les tables selon les valeurs d'une variable"
+    ]
+  },
+  {
+    "question": "Pour faciliter la communication entre la machine hôte et un container Docker, on peut utiliser les",
+    "subject": "Automation",
+    "all_responses": [
+      "Volumes",
+      "Containers",
+      "Networks",
+      "Images"
+    ],
+    "correct_responses": [
+      "Networks"
+    ]
+  },
+  {
+    "question": "Pour faciliter le passage de fichiers entre la machine hôte et un container Docker, on peut utiliser les",
+    "subject": "Automation",
+    "all_responses": [
+      "Volumes",
+      "Containers",
+      "Networks",
+      "Images"
+    ],
+    "correct_responses": [
+      "Volumes"
+    ]
+  },
+  {
+    "question": "Pour indexer des données textuelles, je peux utiliser",
+    "subject": "BDD",
+    "all_responses": [
+      "Neo4J",
+      "MySQL",
+      "ElasticSearch"
+    ],
+    "correct_responses": [
+      "ElasticSearch"
+    ]
+  },
+  {
+    "question": "Pourquoi utiliser Docker?",
+    "subject": "Automation",
+    "all_responses": [
+      "Pour déployer facilement et rapidement des processus",
+      "Pour isoler des processus de la machine hôte",
+      "Pour tester des services rapidement",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Pourquoi utiliser des APIs?",
+    "subject": "Automation",
+    "all_responses": [
+      "Pour permettre une évolution facile des services",
+      "Pour isoler les services de l'utilisateur final",
+      "Pour normaliser les communications entre services",
+      "Tous ces points"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Que signifie le sigle No-SQL ?",
+    "subject": "BDD",
+    "all_responses": [
+      "Pas tout SQL",
+      "Pas seulement SQL",
+      "Pas de SQL"
+    ],
+    "correct_responses": [
+      "Pas seulement SQL"
+    ]
+  },
+  {
+    "question": "Quel algorithme est mieux adapté à un jeu de données majoritairement composé de variables qualitatives?",
+    "subject": "Classification",
+    "all_responses": [
+      "Arbre de décision",
+      "SVM",
+      "Régression Logistique"
+    ],
+    "correct_responses": [
+      "Arbre de décision"
+    ]
+  },
+  {
+    "question": "Quelle commande permet de lancer un container Docker ?",
+    "subject": "Automation",
+    "all_responses": [
+      "docker image pull nom_de_l_image",
+      "docker container pull nom_de_l_image",
+      "docker container run nom_de_l_image",
+      "docker image run nom_de_l_image"
+    ],
+    "correct_responses": [
+      "docker container run nom_de_l_image"
+    ]
+  },
+  {
+    "question": "Quelle est la différence entre le processing time et le event time ?",
+    "subject": "Streaming de données",
+    "all_responses": [
+      "L’un correspond à l’entrée de la donnée dans le système alors que l’autre correspond à la date de création de la donnée",
+      "L’un correspond au temps de début de calcul alors que l’autre correspond à la durée nécessaire pour le calcul",
+      "Ce sont en fait la même chose"
+    ],
+    "correct_responses": [
+      "L’un correspond à l’entrée de la donnée dans le système alors que l’autre correspond à la date de création de la donnée"
+    ]
+  },
+  {
+    "question": "Quelle métrique est utilisée en classification ?",
+    "subject": "Classification",
+    "all_responses": [
+      "La perplexité",
+      "Le RMSE",
+      "Le F1-score"
+    ],
+    "correct_responses": [
+      "Le F1-score"
+    ]
+  },
+  {
+    "question": "Quels sont les trois éléments constitutifs de Hadoop ?",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "HDFS, YARN et Haddoop MapReduce",
+      "Spark, Hadoop MapReduce et Hive",
+      "Hive, LOL et Spark"
+    ],
+    "correct_responses": [
+      "HDFS, YARN et Haddoop MapReduce"
+    ]
+  },
+  {
+    "question": "Regression",
+    "subject": "Machine Learning",
+    "all_responses": [
+      "Gives the same results with two points or a thousand.",
+      "Is used when the target we aim to predict is continuous.",
+      "Is used when the target we aim to predict is discrete."
+    ],
+    "correct_responses": [
+      "Is used when the target we aim to predict is continuous."
+    ]
+  },
+  {
+    "question": "Si on fait un parallèle avec la programmation orientée objet, les images de containers Docker sont l'équivalent des",
+    "subject": "Automation",
+    "all_responses": [
+      "Méthodes",
+      "Instances de classes",
+      "Objets",
+      "Classes"
+    ],
+    "correct_responses": [
+      "Classes"
+    ]
+  },
+  {
+    "question": "Spark se différencie de Hadoop par",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "son absence de système de stockage",
+      "Tous ces points",
+      "l'écriture en mémoire plutôt que sur disque lors de la phase de Shuffle",
+      "ses nombreuses librairies notamment de Machine Learning"
+    ],
+    "correct_responses": [
+      "Tous ces points"
+    ]
+  },
+  {
+    "question": "Sqoop est utilisé",
+    "subject": "Systèmes distribués",
+    "all_responses": [
+      "De faire des calculs en temps réel ",
+      "Pour transférer des données depuis des SGDBR vers HDFS et inversement",
+      "Tous ces points",
+      "D'automatiser des jobs Map Reduce"
+    ],
+    "correct_responses": [
+      "Pour transférer des données depuis des SGDBR vers HDFS et inversement"
+    ]
+  },
+  {
+    "question": "Un système de messagerie asynchrone permet de décorréler les consommateurs et les producteurs",
+    "subject": "Streaming de données",
+    "all_responses": [
+      "Vrai",
+      "Faux"
+    ],
+    "correct_responses": [
+      "Vrai"
+    ]
+  },
+  {
+    "question": "What is Machine learning ?",
+    "subject": "Machine Learning",
+    "all_responses": [
+      "When an algorithm is programmed to adapt itself to a given situation.",
+      "The phenomenon in which an algorithm realizes it is not paid enough and puts itself on a strike.",
+      "Exactly what Datascientest offers : a way to learn through machines.",
+      "An application of artificial intelligence that provides systems the ability to automatically learn and improve from experience without being explicitly programmed."
+    ],
+    "correct_responses": [
+      "An application of artificial intelligence that provides systems the ability to automatically learn and improve from experience without being explicitly programmed."
+    ]
+  },
+  {
+    "question": "When building a model, you have to",
+    "subject": "Data Science",
+    "all_responses": [
+      "Train it on all the data available.",
+      "Look out for parameters that can be optimized and optimze them."
+    ],
+    "correct_responses": [
+      "Train it on all the data available."
+    ]
+  },
+  {
+    "question": "Your model is all done and working, what's next?",
+    "subject": "Data Science",
+    "all_responses": [
+      "My project is done ! ",
+      "Analyze the results and tune the existing model to fit best the problem defined initially."
+    ],
+    "correct_responses": [
+      "Analyze the results and tune the existing model to fit best the problem defined initially."
+    ]
+  }
+]
