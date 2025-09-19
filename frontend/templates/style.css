@@ -1,0 +1,176 @@
+/* Variables */
+:root {
+    --primary: #4CAF50;
+    --primary-hover: #43a047;
+    --text-color: hwb(0 100% 0%);
+    --muted: #bdbdbd;
+    --radius: 12px;
+    --font: 'Inter', Arial, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    color: var(--text-color);
+
+    /* fond */
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('fond-1.jpg') no-repeat center center fixed;
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Conteneur */
+.wrapper {
+    width: 100%;
+    max-width: 480px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 32px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    margin: 40px auto;
+    /* centré */
+}
+
+/* Image interne réduite */
+.hero-img {
+    display: block;
+    max-width: 100%;
+    max-height: 200px;
+    /* limite hauteur */
+    margin: 0 auto 20px auto;
+    border-radius: var(--radius);
+    object-fit: cover;
+}
+
+/* Titres */
+h1 {
+    text-align: center;
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 26px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* Champs & select */
+input,
+select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 6px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-color);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    appearance: none;
+    /* supprime style natif */
+}
+
+select {
+    background-color: rgba(255, 255, 255, 0.07);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+input::placeholder {
+    color: #cccccc;
+}
+
+/* Boutons */
+button {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 18px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+button[type="button"] {
+    background-color: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+button[type="button"]:hover {
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* Footer collé en bas */
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: auto;
+    /* pousse en bas */
+    padding: 20px 0;
+}
+
+footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin: 0 8px;
+}
+
+footer a:hover {
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .wrapper {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}
