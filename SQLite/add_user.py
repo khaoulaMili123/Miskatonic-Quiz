@@ -3,16 +3,10 @@ import bcrypt
 import os
 
 sqlite_path = "./data/bdd_connexion.sqlite"
+os.makedirs("./data", exist_ok=True)
 
-os.makedirs("./data", exist_ok=True)  # vérifier que data existe
-
+# ---- LOGIN ----
 def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
-    """
-    Vérifie si l'utilisateur existe :
-      - Si existe + mdp correct → connexion
-      - Si existe + mdp incorrect → demander changement
-      - Si n'existe pas → proposer création
-    """
     conn = sqlite3.connect(sqlite_path)
     cur = conn.cursor()
 
@@ -22,6 +16,8 @@ def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
 
     if result:
         stored_hashed_password = result[0]
+        if isinstance(stored_hashed_password, str):
+            stored_hashed_password = stored_hashed_password.encode('utf-8')
         if bcrypt.checkpw(mot_de_passe.encode('utf-8'), stored_hashed_password):
             conn.close()
             return True, "Connexion réussie."
@@ -32,11 +28,24 @@ def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
         conn.close()
         return False, "Identifiant inconnu, veuillez créer un compte."
 
-if __name__ == "__main__":
+# ---- CREATION UTILISATEUR ----
+def register_user(nom_utilisateur, identifiant, mot_de_passe, role_id):
+    conn = sqlite3.connect(sqlite_path)
+    cur = conn.cursor()
 
-    nom = input("Nom complet : ")
-    identifiant = input("Identifiant : ")
-    mdp = input("Mot de passe : ")
-    role = int(input("Role ID (1=enseignant, 2=etudiant, 3=administrateur) : "))
+    # Vérifie si identifiant déjà utilisé
+    cur.execute("SELECT * FROM utilisateurs WHERE identifiant=?", (identifiant,))
+    result = cur.fetchone()
 
-    add_users(nom, identifiant, mdp, role)
+    if result:
+        conn.close()
+        return False, "Identifiant déjà utilisé, changez votre mot de passe"
+
+    hashed_password = bcrypt.hashpw(mot_de_passe.encode('utf-8'), bcrypt.gensalt())
+    cur.execute(
+        "INSERT INTO utilisateurs (nom_utilisateur, identifiant, mot_de_passe, role_id) VALUES (?, ?, ?, ?)",
+        (nom_utilisateur, identifiant, hashed_password, role_id)
+    )
+    conn.commit()
+    conn.close()
+    return True, "Vous êtes bien inscrit !"

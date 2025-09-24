@@ -10,36 +10,18 @@
 
 <body>
     <div class="container">
-        <!-- Colonne gauche -->
         <div class="left">
             <h2>Miskatonic University</h2>
-
-            <p>
-                Découvrez l’univers mythique de la Miskatonic University :
-            </p>
+            <p>Découvrez l’univers mythique de la Miskatonic University :</p>
             <p>Excellence académique, recherche et mystères.</p>
             <p>Plongez dans un environnement d’apprentissage unique.</p>
-
             <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo">
-
         </div>
 
-        <!-- Colonne droite -->
         <div class="right">
             <div class="wrapper">
                 <h1>Bienvenue au Miskatonic Quiz !</h1>
-
-                <form action="{{ url_for('login') }}" method="post">
-                    <!--<label for="role">Rôle</label>
-                    <select id="role" name="role">
-                        <option value="enseignant">Enseignant</option>
-                        <option value="etudiant">Étudiant</option>
-                        <option value="admin">Administrateur</option>
-                    </select>
-
-                    <label for="nom">Nom complet</label>
-                    <input type="text" id="nom" name="nom" placeholder="Votre nom" required>-->
-
+                <form action="{{ url_for('home') }}" method="post">
                     <label for="identif">Identifiant</label>
                     <input type="text" id="identif" name="identif" placeholder="Votre identifiant" required>
 
@@ -47,8 +29,10 @@
                     <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
 
                     <button type="submit">Se connecter</button>
-                    <button type="button" onclick="window.location.href='/inscription'">Créer un compte</button>
+                    <button type="button" onclick="window.location.href='{{ url_for('inscription') }}'">Créer un
+                        compte</button>
                 </form>
+
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
                 <div class="flash-container">
@@ -58,9 +42,8 @@
                 </div>
                 {% endif %}
                 {% endwith %}
-                <p class="small">
-                    <a href="#">Mot de passe oublié ?</a>
-                </p>
+
+                <p class="small"><a href="#">Mot de passe oublié ?</a></p>
             </div>
         </div>
     </div>
