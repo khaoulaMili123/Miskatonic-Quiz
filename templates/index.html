@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Générer le Quiz</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Miskatonic" style="width: 150px; height: auto; display: block; margin: 0 auto 20px auto;" />
+  
+    <h1>Générer le quiz</h1>
+    <p class="subtitle">Générez le quiz qui correspond le mieux à vos besoins d’évaluation</p>
+
+    <div class="steps">
+      <div class="step active">1</div>
+      <div class="step">2</div>
+      <div class="step">3</div>
+    </div>
+
+    <form action="/" method="post">
+      <label for="username">Identifiant :</label>
+      <input type="text" id="identifiant" name="identifiant" required>
+
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="mot_de_passe" name="mot_de_passe" required>
+
+      <button type="submit">Accéder au générateur de quiz</button>
+
+      <div class="links">
+        <a href="#">Mot de passe oublié ?</a>
+        <a href="#">Créer un nouveau compte</a>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

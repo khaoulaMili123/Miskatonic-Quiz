@@ -1,9 +1,15 @@
 import pandas as pd
 import json
+from pymongo import MongoClient
 
 questions_path = "./data/questions.csv"
 output_csv = "./data/questions_clean.csv"
 output_json = "./data/quiz.json"
+
+# Connexion MongoDB
+client = MongoClient('mongodb://localhost:27017/')
+db = client.miskatonic_db
+questions_collection = db.questions
 
 def run_etl():
     """Charge le CSV, nettoie, normalise et transforme en format long sans perdre de questions."""
@@ -45,9 +51,9 @@ def run_etl():
         df.groupby("question_norm")
         .agg({
             "question": "first",
-            "subject": "first",  # ✅ garder le sujet
-            "use": "first",      # ✅ garder l'usage
-            "remark": "first",   # ✅ garder le commentaire
+            "subject": "first",
+            "use": "first",
+            "remark": "first",
             **{col: lambda s: [item for sublist in s for item in sublist] for col in response_cols},
             "correct": lambda x: ",".join(sorted(set(",".join(x).split(","))))
         })
@@ -74,12 +80,21 @@ def run_etl():
     df_long = df_grouped[["question", "subject", "use", "possible_answers", "correct_answers"]]
     print(f"📌 Transformation en format long terminée : {len(df_long)} lignes")
 
-    # Sauvegardes
-    df_long.to_csv(output_csv, index=False)
-    with open(output_json, "w", encoding="utf-8") as f:
-        json.dump(df_long.to_dict(orient="records"), f, ensure_ascii=False, indent=2)
+    print(df_long["use"].value_counts())
 
-    print(f"✅ Sauvegardé : {output_csv} et {output_json}")
+
+    # Insérer dans MongoDB
+    questions_collection.delete_many({})
+    questions_list = df_long.to_dict(orient="records")
+    questions_collection.insert_many(questions_list)
+    print(f"✅ {len(questions_list)} questions insérées dans MongoDB")
+
+    # # Sauvegardes locales
+    # df_long.to_csv(output_csv, index=False)
+    # with open(output_json, "w", encoding="utf-8") as f:
+    #     json.dump(questions_list, f, ensure_ascii=False, indent=2)
+    # print(f"✅ Sauvegardé : {output_csv} et {output_json}")
+
     return df_long
 
 if __name__ == "__main__":
