@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 import pandas as pd
 import json
 
@@ -48,12 +49,24 @@ def etl_quiz():
                .reset_index())
     #print (df)
     #Convertir en dictionnaires et exporter en JSON
-    output_json= "./data/questions.json"
-    records = grouped.to_dict(orient='records')
-    with open(output_json, 'w', encoding='utf-8') as f:
-        json.dump(records, f, ensure_ascii=False, indent=2)
+    # output_json= "./data/questions.json"
+    # records = grouped.to_dict(orient='records')
+    # with open(output_json, 'w', encoding='utf-8') as f:
+    #     json.dump(records, f, ensure_ascii=False, indent=2)
 
-    print(f"Fichier JSON créé : {output_json}")
+    # print(f"Fichier JSON créé : {output_json}")
+      # --- Connexion MongoDB ---
+    records = grouped.to_dict(orient='records')
+ 
+    client = MongoClient("mongodb://isen:isen@localhost:27017/")  # ou mongodb:27017 si dans docker
+    db = client['quiz_db']
+    collection = db['questions']
+
+    # Nettoyer puis insérer
+    #collection.delete_many({})
+    collection.insert_many(records)
+
+    print(f"{len(records)} questions insérées dans MongoDB")
 
 if __name__ == "__main__":
     etl_quiz()

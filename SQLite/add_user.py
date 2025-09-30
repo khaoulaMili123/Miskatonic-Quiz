@@ -26,7 +26,7 @@ def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
             return False, "Mot de passe incorrect, veuillez le changer."
     else:
         conn.close()
-        return False, "Identifiant inconnu, veuillez créer un compte."
+        #return False, "Identifiant inconnu, veuillez créer un compte."
 
 # ---- CREATION UTILISATEUR ----
 def register_user(nom_utilisateur, identifiant, mot_de_passe, role_id):
