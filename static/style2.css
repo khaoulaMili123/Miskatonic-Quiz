@@ -1,0 +1,150 @@
+:root { 
+    --primary: #882c65;
+    --primary-hover: #af4c89;
+    --text-color: #ffffff;
+    --muted: #bdbdbd;
+    --radius: 12px;
+    --font: 'Inter', Arial, sans-serif;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--text-color);
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+                url('../static/images/fond-1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: rgba(59, 31, 74, 0.85); 
+    padding: 40px;
+    border-radius: var(--radius);
+    width: 400px;
+    max-width: 95%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 20px;
+    width: 100px;
+}
+
+h1 { font-size: 24px; font-weight: 600; margin-bottom: 10px; }
+.subtitle { font-size: 0.95em; margin-bottom: 20px; color: var(--muted); }
+
+.steps { display: flex; justify-content: space-around; margin-bottom: 20px; }
+.step { width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.2); 
+       line-height: 35px; color: var(--muted); font-weight: 600; }
+.step.active { background: var(--primary); color: white; }
+
+/* Cacher les vraies checkboxes/radios */
+input[type="checkbox"].option-btn-radio,
+input[type="radio"].option-btn-radio {
+    display: none;
+}
+
+/* --- Checkbox catégories --- */
+input[type="checkbox"].option-btn-radio + .option-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    margin: 5px;
+    position: relative;
+    background-color: rgba(255,255,255,0.1);
+    border: 2px solid #444;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+/* Carré à gauche */
+input[type="checkbox"].option-btn-radio + .option-btn::before {
+    content: "";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #444;
+    border-radius: 4px;
+    background-color: white;
+    flex-shrink: 0;
+}
+
+/* Coche ✓ centrée dans le carré, légèrement décalée à droite */
+input[type="checkbox"].option-btn-radio:checked + .option-btn::after {
+    content: "✓";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 21px;   /* ajusté de 12px à 14px pour décaler à droite */
+    top: 11px;    /* reste centré verticalement */
+    font-size: 12px;
+    font-weight: bold; 
+    color: black; /* coche en noir */
+}
+
+/* Supprimer l'effet hover sur le contour */
+input[type="checkbox"].option-btn-radio + .option-btn:hover {
+    border-color: #444;
+}
+
+/* --- Radio boutons (nombre) --- */
+input[type="radio"].option-btn-radio + .option-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border: 2px solid #444;
+    border-radius: var(--radius);
+    background-color: rgba(255,255,255,0.1);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Radio sélectionné : fond violet */
+input[type="radio"].option-btn-radio:checked + .option-btn {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Hover général */
+.option-btn:hover { border-color: var(--primary); }
+
+/* Bouton submit */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .container { padding: 30px 20px; }
+    input[type="radio"].option-btn-radio + .option-btn,
+    input[type="checkbox"].option-btn-radio + .option-btn { width: 100%; margin: 5px 0; }
+}
