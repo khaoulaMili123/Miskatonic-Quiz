@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter des Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ajoute.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>➕ Ajouter des Questions</h1>
+
+        <form action="{{ url_for('add_quest') }}" method="POST" id="quiz-form">
+
+            <div id="questions-container">
+                <!-- Première question par défaut -->
+                <div class="question-block">
+                    <h2>Question 1</h2>
+                    <div class="form-group">
+                        <label>Sujet</label>
+                        <select name="subject[]" required>
+                            <option value="">-- Sélectionnez un sujet --</option>
+                            {% for subj in subjects %}
+                            <option value="{{ subj }}">{{ subj }}</option>
+                            {% endfor %}
+                            <option value="__new__">➕ Nouveau sujet...</option>
+                        </select>
+                        <input type="text" name="new_subject[]" placeholder="Nouveau sujet" class="hidden">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type de test</label>
+                        <select name="use[]" required>
+                            <option value="">-- Sélectionnez --</option>
+                            {% for t in test_types %}
+                            <option value="{{ t }}">{{ t }}</option>
+                            {% endfor %}
+                            <option value="__new__">➕ Nouveau type...</option>
+                        </select>
+                        <input type="text" name="new_use[]" placeholder="Nouveau type de test" class="hidden">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Question</label>
+                        <textarea name="question[]" placeholder="Tapez votre question ici..." rows="3"
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Réponses possibles</label>
+                        <div class="responses-container">
+                            <div class="response-item">
+                                <input type="text" name="responseA[]" placeholder="Réponse A" required>
+                                <button type="button" class="delete-response">❌</button>
+                            </div>
+                            <div class="response-item">
+                                <input type="text" name="responseB[]" placeholder="Réponse B" required>
+                                <button type="button" class="delete-response">❌</button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-response-btn">➕ Ajouter une réponse</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Réponse(s) correcte(s)</label>
+                        <input type="text" name="correct[]" placeholder="Ex : A, B" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Remarque (optionnel)</label>
+                        <textarea name="remark[]" placeholder="Ajoutez un commentaire..." rows="2"></textarea>
+                    </div>
+
+                    <button type="button" class="delete-question-btn">❌ Supprimer cette question</button>
+                    <hr>
+                </div>
+            </div>
+
+            <button type="button" id="add-question-btn" class="add-btn">➕ Ajouter une question</button>
+
+            <div class="form-actions">
+                <button type="submit">Enregistrer</button>
+                <button type="reset">♻ Réinitialiser</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+        function attachQuestionEvents(block) {
+            const subjectSelect = block.querySelector('select[name="subject[]"]');
+            const newSubject = block.querySelector('input[name="new_subject[]"]');
+            subjectSelect.addEventListener("change", () => {
+                newSubject.classList.toggle("hidden", subjectSelect.value !== "__new__");
+            });
+
+            const useSelect = block.querySelector('select[name="use[]"]');
+            const newUse = block.querySelector('input[name="new_use[]"]');
+            useSelect.addEventListener("change", () => {
+                newUse.classList.toggle("hidden", useSelect.value !== "__new__");
+            });
+
+            const addResponseBtn = block.querySelector('.add-response-btn');
+            const responsesContainer = block.querySelector('.responses-container');
+            let responseCount = responsesContainer.querySelectorAll('.response-item').length;
+
+            addResponseBtn.addEventListener("click", () => {
+                if (responseCount >= letters.length) return;
+                const letter = letters[responseCount];
+                responseCount++;
+                const div = document.createElement("div");
+                div.className = "response-item";
+                div.innerHTML = `
+                    <input type="text" name="response${letter}[]" placeholder="Réponse ${letter}">
+                    <button type="button" class="delete-response">❌</button>
+                `;
+                responsesContainer.appendChild(div);
+                attachDeleteResponse(div.querySelector(".delete-response"), responsesContainer);
+            });
+
+            block.querySelectorAll('.delete-response').forEach(btn => {
+                attachDeleteResponse(btn, responsesContainer);
+            });
+
+            const deleteQuestionBtn = block.querySelector('.delete-question-btn');
+            deleteQuestionBtn.addEventListener("click", () => {
+                block.remove();
+                updateQuestionNumbers();
+            });
+        }
+
+        function attachDeleteResponse(btn, container) {
+            btn.addEventListener("click", () => {
+                btn.parentElement.remove();
+            });
+        }
+
+        function updateQuestionNumbers() {
+            document.querySelectorAll('.question-block').forEach((block, index) => {
+                block.querySelector('h2').textContent = `Question ${index + 1}`;
+            });
+        }
+
+        const addQuestionBtn = document.getElementById("add-question-btn");
+        const questionsContainer = document.getElementById("questions-container");
+
+        addQuestionBtn.addEventListener("click", () => {
+            const firstBlock = document.querySelector('.question-block');
+            const newBlock = firstBlock.cloneNode(true);
+            newBlock.querySelectorAll('input, textarea').forEach(el => el.value = "");
+            newBlock.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+            newBlock.querySelectorAll('.responses-container .response-item').forEach((el, idx) => {
+                const letter = letters[idx];
+                el.querySelector('input').name = `response${letter}[]`;
+            });
+            questionsContainer.appendChild(newBlock);
+            attachQuestionEvents(newBlock);
+            updateQuestionNumbers();
+        });
+
+        document.querySelectorAll('.question-block').forEach(block => attachQuestionEvents(block));
+    </script>
+</body>
+
+</html>

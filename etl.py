@@ -1,25 +1,18 @@
 from pymongo import MongoClient
 import pandas as pd
-import json
 
 def etl_quiz():
-    df= pd.read_csv("./data/questions.csv")
-    #df = df.iloc[:-8]
-    print (df)
-    
-    #colonnes contenant les réponses
-    response_cols = [col for col in df.columns if col.lower().startswith('response')]
-    #print (response_cols)
+    df = pd.read_csv("./data/questions.csv")
+    print("CSV chargé :", df.shape, "lignes")
 
-    #tous les réponses pour chaque ligne
+    response_cols = [col for col in df.columns if col.lower().startswith('response')]
     df['all_responses'] = df[response_cols].apply(
-        lambda x: [resp for resp in x if pd.notna(resp)], axis=1)
-    #Supprimer les deux-points dans les questions
+        lambda x: [resp for resp in x if pd.notna(resp)], axis=1
+    )
     df['question'] = df['question'].str.replace(":", "", regex=False)
-    
-    # Créer pour chaque ligne la ou les bonnes réponses (texte)
+
     def get_correct_responses(row):
-        correct_letters = str(row['correct']).split(',')  
+        correct_letters = str(row['correct']).split(',')
         correct_answers = []
         for letter in correct_letters:
             letter = letter.strip().upper()
@@ -29,44 +22,64 @@ def etl_quiz():
         return correct_answers
 
     df['correct_responses'] = df.apply(get_correct_responses, axis=1)
-    # Supprimer les lignes invalides :
-    df = df[df['question'].notna()]                          # question non nulle
-    df = df[df['question'].str.strip() != ""]                # question non vide
-    df = df[df['all_responses'].map(len) > 0]                # au moins une réponse
-    df = df[df['correct_responses'].map(len) > 0]            # au moins une bonne réponse
 
-    # Nettoyer encore une fois les listes (au cas où) :
+    # Filtrer lignes invalides
+    df = df[df['question'].notna()]
+    df = df[df['question'].str.strip() != ""]
+    df = df[df['all_responses'].map(len) > 0]
+    df = df[df['correct_responses'].map(len) > 0]
+
     df['all_responses'] = df['all_responses'].apply(lambda lst: [r for r in lst if str(r).strip() != ""])
     df['correct_responses'] = df['correct_responses'].apply(lambda lst: [r for r in lst if str(r).strip() != ""])
-    print (df)
-    #Regrouper par question pour fusionner les réponses et bonnes réponses
-    grouped = (df.groupby('question')
-               .agg({
-                   'subject': 'first',
-                   'all_responses': lambda x: list({resp for sublist in x for resp in sublist}),
-                   'correct_responses': lambda x: list({resp for sublist in x for resp in sublist})
-               })
-               .reset_index())
-    #print (df)
-    #Convertir en dictionnaires et exporter en JSON
-    # output_json= "./data/questions.json"
-    # records = grouped.to_dict(orient='records')
-    # with open(output_json, 'w', encoding='utf-8') as f:
-    #     json.dump(records, f, ensure_ascii=False, indent=2)
 
-    # print(f"Fichier JSON créé : {output_json}")
-      # --- Connexion MongoDB ---
-    records = grouped.to_dict(orient='records')
- 
-    client = MongoClient("mongodb://isen:isen@localhost:27017/")  # ou mongodb:27017 si dans docker
+    # Connexion MongoDB
+    client = MongoClient("mongodb://isen:isen@localhost:27017/")
     db = client['quiz_db']
-    collection = db['questions']
 
-    # Nettoyer puis insérer
-    #collection.delete_many({})
-    collection.insert_many(records)
+    # --- Collection questions ---
+    collection_q = db['questions']
+    collection_q.delete_many({})
+    records = df.to_dict(orient='records')
+    collection_q.insert_many(records)
+    print(f"{len(records)} questions insérées dans la collection 'questions'")
 
-    print(f"{len(records)} questions insérées dans MongoDB")
+    # --- Collection subjects ---
+    collection_s = db['subjects']
+    collection_s.delete_many({})
+    subjects_grouped = df.groupby('subject', group_keys=False).apply(
+        lambda x: x[['question', 'use', 'all_responses', 'correct_responses']].to_dict(orient='records')
+    ).reset_index()
+
+    subjects_records = []
+    for _, row in subjects_grouped.iterrows():
+        subjects_records.append({
+            "subject": row['subject'],
+            "questions": row[0]
+        })
+    collection_s.insert_many(subjects_records)
+    print(f"{len(subjects_records)} sujets insérés dans la collection 'subjects'")
+
+    # --- Collection test_types ---
+    collection_test = db['test_types']
+    collection_test.delete_many({})
+
+    test_grouped = df.groupby('use', group_keys=False).apply(
+        lambda x: x[['subject', 'question', 'all_responses', 'correct_responses']].to_dict(orient='records')
+    ).reset_index()
+
+    test_records = []
+    for _, row in test_grouped.iterrows():
+        test_records.append({
+            "test_type": row['use'],
+            "questions": row[0]
+        })
+    collection_test.insert_many(test_records)
+    print(f"{len(test_records)} types de tests insérés dans la collection 'test_types'")
+
+    # --- Collection questionnaires (vide) ---
+    collection_questionnaires = db['questionnaires']
+    collection_questionnaires.delete_many({})
+    print("Collection 'questionnaires' créée vide")
 
 if __name__ == "__main__":
     etl_quiz()

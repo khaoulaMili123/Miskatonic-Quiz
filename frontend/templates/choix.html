@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter ou Accéder au générateur de quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <h1>Que souhaitez-vous faire ?</h1>
+
+            <button type="button" onclick="window.location.href='{{ url_for('add_quest') }}'">
+                Ajouter une ou plusieurs questions
+            </button>
+
+            <button type="button" onclick="window.location.href='{{ url_for('acceder') }}'">
+                Accéder au générateur de quiz
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <a href="#">Mentions légales</a> | <a href="#">Contact</a><br>
+            Copyright © 2025
+        </p>
+    </footer>
+</body>
+
+</html>

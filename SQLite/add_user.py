@@ -6,12 +6,11 @@ sqlite_path = "./data/bdd_connexion.sqlite"
 os.makedirs("./data", exist_ok=True)
 
 # ---- LOGIN ----
-def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
+def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id=1):
     conn = sqlite3.connect(sqlite_path)
     cur = conn.cursor()
 
-    cur.execute("SELECT mot_de_passe FROM utilisateurs WHERE identifiant=? AND role_id=?", 
-                (identifiant, role_id))
+    cur.execute("SELECT mot_de_passe, role_id FROM utilisateurs WHERE identifiant=?", (identifiant,))
     result = cur.fetchone()
 
     if result:
@@ -26,7 +25,7 @@ def add_users(nom_utilisateur, identifiant, mot_de_passe, role_id):
             return False, "Mot de passe incorrect, veuillez le changer."
     else:
         conn.close()
-        #return False, "Identifiant inconnu, veuillez créer un compte."
+        return False, "Identifiant inconnu, veuillez créer un compte."
 
 # ---- CREATION UTILISATEUR ----
 def register_user(nom_utilisateur, identifiant, mot_de_passe, role_id):
