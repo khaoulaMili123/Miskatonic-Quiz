@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Quiz</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <h1>📊 Générateur de Quiz</h1>
+            <p>Sélectionnez vos questions par sujet et type de test pour créer un quiz personnalisé.</p>
+
+            <!-- Filtre -->
+            <form action="{{ url_for('selection') }}" method="POST" class="form-filters">
+                <label for="categorie">Choisir une ou plusieurs catégories</label><br>
+                {% for subject in subjects %}
+                <input type="checkbox" name="categorie" value="{{ subject }}"> {{ subject }}<br>
+                {% endfor %}
+
+                <label for="nombre">Nombre de questions</label>
+                <input type="number" id="nombre" name="nombre" min="1" required>
+
+                <button type="submit">🎯 Générer le quiz</button>
+            </form>
+
+            <!-- Tableau des questions -->
+            <h2>📚 Questions disponibles</h2>
+            {% for subject, grouped in questions_by_subject.items() %}
+            <h3>{{ test_type }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sujet</th>
+                        <th>Question</th>
+                        <th>Réponses possibles</th>
+                        <th>Réponses correctes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for q in grouped %}
+                    <tr>
+                        <td>{{ q.subject }}</td>
+                        <td>{{ q.question }}</td>
+                        <td>
+                            <ul>
+                                {% for r in q.all_responses %}
+                                <li>{{ r }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                {% for r in q.correct_responses %}
+                                <li><strong>{{ r }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+
+            <p class="small">
+                <a href="{{ url_for('choix') }}">⬅ Retour</a>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,347 @@
+:root {
+    --primary: #882c65;
+    --primary-hover: #af4c89;
+    --text-color: #ffffff;
+    --muted: #bdbdbd;
+    --radius: 12px;
+    --font: 'Inter', Arial, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    /* empêche le scroll vertical ET horizontal */
+}
+
+body {
+    font-family: var(--font);
+    color: var(--text-color);
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('../static/images/fond-1.jpg') no-repeat center center fixed;
+    background-size: 1270px 650px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* Conteneur centré fixe */
+.container_creat {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 1300px;
+    max-width: 1500px;
+    margin-left: 130px;
+    gap: 60px;
+    padding: 40px;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    gap: 60px;
+    padding: 40px;
+}
+
+/* Colonne gauche */
+/* Animations */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Texte et images avec animations */
+/* Animation glow néon violet pour le h2 */
+@keyframes neonGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 5px #9b00ff, 0 0 10px #9b00ff, 0 0 20px #9b00ff, 0 0 30px #9b00ff;
+        color: #d600ff;
+    }
+
+    50% {
+        text-shadow: 0 0 10px #d600ff, 0 0 20px #d600ff, 0 0 30px #d600ff, 0 0 40px #d600ff;
+        color: #ff8aff;
+    }
+}
+
+/* Texte et images avec animations */
+.left {
+    width: 1400px;
+    flex: 2;
+    /* occupe deux fois plus de place */
+    /* tu peux aussi fixer une largeur minimale */
+    min-width: 700px;
+}
+
+.left h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-left: 400px;
+    font-weight: 700;
+    margin-top: 130px;
+    opacity: 0;
+
+    /* Deux animations combinées : fadeInUp pour le mouvement + neonGlow pour le glow */
+    animation: fadeInUp 1s ease-out forwards, neonGlow 2s ease-in-out infinite alternate;
+    animation-delay: 0.2s, 1s;
+    /* le glow commence après l'apparition */
+}
+
+/* Optionnel : intensifier le glow au survol */
+.left h2:hover {
+    text-shadow: 0 0 15px #d600ff, 0 0 30px #d600ff, 0 0 45px #d600ff, 0 0 60px #ff8aff;
+    cursor: pointer;
+}
+
+.left p {
+    font-size: 14px;
+    line-height: 1.6;
+    width: 9OOpx;
+    max-width: 900px;
+    margin-right: 0px;
+    margin-left: 320px;
+    margin-top: 10px;
+    text-align: center;
+    animation: fadeInUp 1s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+.left img {
+    max-width: 120px;
+    margin-top: 20px;
+    border-radius: var(--radius);
+    display: block;
+    margin-left: 450px;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    /* pour l'animation fadeIn initiale */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
+    border: 3px solid #841a72;
+    box-shadow: 0 0 10px #ff00d0, 0 0 20px #9b00ff, 0 0 30px #9b00ff;
+}
+
+/* Hover effect */
+.left img:hover {
+    transform: scale(1.1) rotate(2deg);
+    /* léger zoom et rotation */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* ombre douce */
+    cursor: pointer;
+}
+
+/* Colonne droite */
+.right {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    margin-right: 200px;
+    margin-top: 70px;
+    margin-left: 0px;
+
+}
+
+/* Formulaire */
+.wrapper {
+    width: 430px;
+    max-width: 430px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    font-weight: 400;
+    font-size: 22px;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--muted);
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 3px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-color);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    appearance: none;
+}
+
+select {
+    background-color: rgba(255, 255, 255, 0.07);
+}
+
+input:focus,
+select:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+input::placeholder {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+button {
+    width: 180px;
+    padding: 12px 14px;
+    margin-top: 20px;
+    border-radius: var(--radius);
+    border: none;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button[type="submit"] {
+    background-color: var(--primary);
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+button[type="button"] {
+    background-color: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+button[type="button"]:hover {
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.small {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.small a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.small a:hover {
+    color: #932981;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    padding: 20px 0;
+    margin-top: -20px;
+}
+
+footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin: 5px 8px;
+    /* margin-bottom: 5px; */
+    margin-top: -20px;
+}
+
+footer a:hover {
+    color: white;
+}
+
+
+/* Responsive */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .left,
+    .right {
+        text-align: center;
+    }
+
+    .left img {
+        margin: 20px auto 0;
+    }
+
+    .wrapper {
+        max-width: 100%;
+    }
+
+}
+
+.flash-container {
+    margin-top: 20px;
+    margin-bottom: 1em;
+    margin-left: 40px;
+    align-items: center;
+}
+
+.flash-message {
+
+    color: red;
+    /* pour une erreur */
+    font-weight: bold;
+    font-size: 13px;
+}
