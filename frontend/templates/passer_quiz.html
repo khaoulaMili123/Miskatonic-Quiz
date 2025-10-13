@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Passer le Quiz: {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="text-center mb-5">
+            <h1 class="display-5">{{ quiz.title }}</h1>
+            <p class="lead text-muted">Sélectionnez la bonne réponse pour chaque question.</p>
+        </div>
+
+        <form action="{{ url_for('submit_quiz', quiz_id=quiz._id) }}" method="POST">
+            {% for question in quiz.questions %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Question {{ loop.index }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text fs-5">{{ question.question }}</p>
+                    <div class="list-group list-group-flush">
+                        {% for key, value in question.responses.items() %}
+                        <label class="list-group-item">
+                            <input class="form-check-input me-2" type="radio" name="question_{{ loop.index0 }}" value="{{ key }}" required>
+                            {{ value }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Soumettre mes réponses</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,59 +1,47 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miskatonic Quiz</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% block title %}Connexion - Miskatonic Quiz{% endblock %}
 
-<body>
-    <div class="container">
-        <div class="left">
-            <h2>Miskatonic University</h2>
-            <p>Découvrez l’univers mythique de la Miskatonic University :</p>
-            <p>Excellence académique, recherche et mystères.</p>
-            <p>Plongez dans un environnement d’apprentissage unique.</p>
-            <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo">
-        </div>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header text-center">
+                <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo" style="width: 80px; margin-bottom: 1rem;">
+                <h3 class="fw-light my-3">Bienvenue au Miskatonic Quiz</h3>
+            </div>
+            <div class="card-body">
 
-        <div class="right">
-            <div class="wrapper">
-                <h1>Bienvenue au Miskatonic Quiz !</h1>
-                <form action="{{ url_for('home') }}" method="post">
-                    <label for="identif">Identifiant</label>
-                    <input type="text" id="identif" name="identif" placeholder="Votre identifiant" required>
-
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
-
-                    <button type="submit">Se connecter</button>
-                    <button type="button" onclick="window.location.href='{{ url_for('inscription') }}'">Créer un
-                        compte</button>
-                </form>
-
-                {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                <div class="flash-container">
-                    {% for message in messages %}
-                    <p class="flash-message">{{ message }}</p>
-                    {% endfor %}
-                </div>
-                {% endif %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                 {% endwith %}
 
-                <p class="small"><a href="#">Mot de passe oublié ?</a></p>
+                <form action="{{ url_for('home') }}" method="post">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="identif" name="identif" type="text" placeholder="Votre identifiant" required>
+                        <label for="identif">Identifiant</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="password" name="password" type="password" placeholder="Votre mot de passe" required>
+                        <label for="password">Mot de passe</label>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4 mb-0">
+                        <button class="btn btn-primary btn-lg" type="submit">Se connecter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small">Nouveau ici ? <a href="{{ url_for('inscription') }}">Créez un compte !</a></div>
             </div>
         </div>
     </div>
-
-    <footer>
-        <p>
-            <a href="#">Mentions légales</a> | <a href="#">Contact</a><br>
-            Copyright © 2025
-        </p>
-    </footer>
-</body>
-
-</html>
+</div>
+{% endblock %}

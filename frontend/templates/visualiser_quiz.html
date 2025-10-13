@@ -1,52 +1,92 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ quiz.title }} - Miskatonic University</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo Miskatonic University" class="logo" id="logo-img">
-            <h1>{{ quiz.title }}</h1>
-            <p class="subtitle">Prêt à être distribué.</p>
+{% extends "base.html" %}
+
+{% block title %}{{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4 d-print-none">
+            <a href="{{ url_for('liste_quiz') }}" class="btn btn-outline-secondary">⬅ Retour à la liste</a>
+            <div>
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#shareModal">Partager</button>
+                <button onclick="window.print();" class="btn btn-success">Imprimer le Quiz</button>
+            </div>
+        </div>
+
+        <div class="text-center mb-5">
+            <h1 class="display-5">{{ quiz.title }}</h1>
+            <p class="lead text-muted">Version enseignant (avec les bonnes réponses).</p>
         </div>
 
         <div id="questions-list">
             {% for question in quiz.questions %}
-            <div class="question-card" id="card-{{ question._id }}">
-                <div class="question-header">
-                    <div class="question-counter">Question {{ loop.index }}</div>
+            <div class="card shadow-sm mb-4 question-card">
+                <div class="card-header">
+                    <h5 class="mb-0">Question {{ loop.index }}</h5>
                 </div>
-                <h2 class="question-text">{{ question.question }}</h2>
-                <div class="options-grid">
-                    {% for key, value in question.responses.items() %}
-                    <div class="option-display {% if key in question.correct %}correct-answer{% endif %}">
-                        <strong class="option-key">{{ key }}</strong>
-                        <span class="option-value">{{ value }}</span>
-                    </div>
-                    {% endfor %}
+                <div class="card-body">
+                    <p class="card-text fs-5">{{ question.question }}</p>
+                    <ul class="list-group list-group-flush">
+                        {% for key, value in question.responses.items() %}
+                        <li class="list-group-item {% if key in question.correct %}list-group-item-success fw-bold{% endif %}">
+                            <strong class="me-2">{{ key }}.</strong> {{ value }}
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             {% endfor %}
         </div>
-
-        <div class="toolbar" style="justify-content: center; margin-top: 30px;">
-            <button onclick="window.print();" class="submit-btn">Imprimer le Quiz</button>
-        </div>
-        <a href="{{ url_for('liste_quiz') }}" class="back-link">⬅ Retour à la liste</a>
     </div>
+</div>
 
-    <style media="print">
-        /* Styles pour l'impression */
-        body { background: none; color: black; padding: 0; }
-        .toolbar, .back-link, #logo-img { display: none; }
-        .quiz-container { max-width: 100%; box-shadow: none; border: none; }
-        .question-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-        .correct-answer { background-color: #e0e0e0 !important; border-left: 3px solid #888 !important; }
-    </style>
-</body>
-</html>
+<!-- Modal de Partage -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shareModalLabel">Partager le lien du quiz</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Envoyez ce lien à vos étudiants pour qu'ils puissent passer le quiz :</p>
+        <input type="text" class="form-control" id="share-link-input" readonly>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="copy-link-btn">Copier le lien</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style media="print">
+    body { background: white !important; }
+    .card { page-break-inside: avoid; }
+    .list-group-item-success { background-color: #d1e7dd !important; }
+</style>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const shareModal = document.getElementById('shareModal');
+    shareModal.addEventListener('show.bs.modal', function () {
+        const shareLinkInput = document.getElementById('share-link-input');
+        const studentLink = "{{ url_for('passer_quiz', quiz_id=quiz._id, _external=True) }}";
+        shareLinkInput.value = studentLink;
+    });
+
+    const copyLinkBtn = document.getElementById('copy-link-btn');
+    copyLinkBtn.addEventListener('click', function() {
+        const shareLinkInput = document.getElementById('share-link-input');
+        shareLinkInput.select();
+        document.execCommand('copy');
+        // Petit feedback visuel
+        this.textContent = 'Copié !';
+        setTimeout(() => { this.textContent = 'Copier le lien'; }, 2000);
+    });
+});
+</script>
+{% endblock %}

@@ -1,83 +1,72 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Construction de Quiz - Miskatonic University</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo Miskatonic University" class="logo">
-            <h1>Outil de Construction de Quiz</h1>
-            <p class="subtitle">Voici une sélection de questions. Affinez-la puis enregistrez votre quiz.</p>
-        </div>
+{% extends "base.html" %}
 
-        <div class="toolbar">
-            <a href="{{ url_for('add_quest') }}" class="tool-button add-new-btn">
-                <span class="icon">+</span> Ajouter une nouvelle question
-            </a>
-        </div>
+{% block title %}{{ title }}{% endblock %}
 
-        <form action="{{ url_for('save_quiz') }}" method="POST" class="quiz-form">
-            <div id="questions-list">
-                {% for question in questions %}
-                <div class="question-card" id="card-{{ question._id }}">
-                    <input type="hidden" name="selected_questions" value="{{ question._id }}">
-                    
-                    <div class="question-header">
-                        <div class="question-counter">Sujet : {{ question.subject | default('Général', true) }}</div>
-                        <button type="button" class="delete-btn" data-card-id="{{ question._id }}" title="Supprimer cette question">×</button>
-                    </div>
+{% block content %}
+<div class="text-center mb-4">
+    <h1 class="display-6">Brouillon du Quiz</h1>
+    <p class="lead text-muted">Voici une sélection de questions. Retirez celles que vous ne souhaitez pas garder, puis enregistrez votre quiz.</p>
+</div>
 
-                    <h2 class="question-text">{{ question.question }}</h2>
-                    
-                    <div class="options-grid">
+<form action="{{ url_for('save_quiz') }}" method="POST" class="quiz-form">
+    <div class="row g-4" id="questions-list">
+        {% for question in questions %}
+        <div class="col-md-6 col-lg-4" id="card-{{ question.id }}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="badge bg-secondary">{{ question.subject | default('Général', true) }}</span>
+                    <button type="button" class="btn-close" data-card-id="{{ question.id }}" title="Supprimer cette question"></button>
+                </div>
+                <div class="card-body">
+                    <p class="card-text fw-bold">{{ question.question }}</p>
+                    <ul class="list-group list-group-flush">
                         {% for key, value in question.responses.items() %}
-                        <div class="option-display {% if key in question.correct %}correct-answer{% endif %}">
-                            <strong class="option-key">{{ key }}</strong>
-                            <span class="option-value">{{ value }}</span>
-                        </div>
+                        <li class="list-group-item {% if key in question.correct %}list-group-item-success fw-bold{% endif %}">
+                            <strong class="me-2">{{ key }}.</strong> {{ value }}
+                        </li>
                         {% endfor %}
+                    </ul>
+                </div>
+                <input type="hidden" name="selected_questions" value="{{ question.id }}">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="sticky-bottom bg-dark py-3 mt-5 border-top border-secondary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <span class="input-group-text">Titre du Quiz:</span>
+                        <input type="text" id="quiz_title" name="quiz_title" class="form-control" value="Quiz du {{ now.strftime('%d/%m/%Y') }}" required>
+                        <button type="submit" class="btn btn-primary">Enregistrer le Quiz</button>
                     </div>
                 </div>
-                {% endfor %}
             </div>
-
-            <div class="form-footer">
-                <label for="quiz_title" class="quiz-title-label">Titre du Quiz :</label>
-                <input type="text" id="quiz_title" name="quiz_title" class="quiz-title-input" value="Quiz du {{ now() | strftime('%d/%m/%Y') }}" required>
-                <button type="submit" class="submit-btn">Enregistrer le Quiz</button>
-            </div>
-        </form>
-        <a href="{{ url_for('choix') }}" class="back-link">⬅ Annuler et retourner au menu</a>
+        </div>
     </div>
+</form>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const questionList = document.getElementById('questions-list');
 
     questionList.addEventListener('click', function (e) {
-        if (e.target && e.target.classList.contains('delete-btn')) {
+        if (e.target && e.target.classList.contains('btn-close')) {
             const cardId = e.target.getAttribute('data-card-id');
-            const cardToRemove = document.getElementById('card-' + cardId);
-            if (cardToRemove) {
-                // Animation de sortie
-                cardToRemove.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                cardToRemove.style.opacity = '0';
-                cardToRemove.style.transform = 'scale(0.95)';
+            const cardWrapper = document.getElementById('card-' + cardId);
+            if (cardWrapper) {
+                cardWrapper.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                cardWrapper.style.opacity = '0';
+                cardWrapper.style.transform = 'scale(0.95)';
                 
                 setTimeout(() => {
-                    cardToRemove.remove();
+                    cardWrapper.remove();
                 }, 300);
             }
         }
     });
 });
 </script>
-</body>
-</html>
+{% endblock %}

@@ -1,8 +1,9 @@
+import os
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 
 # URL et nom de la base
-MONGO_URI = "mongodb://isen:isen@localhost:27017/"
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://isen:isen@localhost:27017/?authSource=admin")
 DB_NAME = "quiz_db"
 
 # Connexion globale

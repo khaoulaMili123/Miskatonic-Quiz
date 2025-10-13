@@ -1,69 +1,68 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Quiz - Paramètres</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category or 'info' }}">{{ message }}</div>
-                {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo Miskatonic University" class="logo">
-        <h1>Générateur de Quiz</h1>
-        <p class="subtitle">Configurez les paramètres de votre quiz.</p>
+{% extends "base.html" %}
 
-        <form action="{{ url_for('quiz') }}" method="POST">
-            <div class="form-section">
-                <h2 class="section-title">1. Choisissez les sujets</h2>
-                <div class="options-container">
-                    {% for subject in subjects %}
-                        <input type="checkbox" id="subj_{{ subject }}" name="subjects" value="{{ subject }}" class="option-btn-radio" checked>
-                        <label for="subj_{{ subject }}" class="option-btn">{{ subject }}</label>
-                    {% else %}
-                        <p>Aucun sujet disponible.</p>
-                    {% endfor %}
-                </div>
+{% block title %}Générateur de Quiz{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header">
+                <h3 class="text-center font-weight-light my-4">Générateur de Quiz</h3>
+                <p class="text-center text-muted">Configurez les paramètres de votre quiz.</p>
             </div>
+            <div class="card-body">
+                <form action="{{ url_for('quiz') }}" method="POST">
+                    
+                    <div class="mb-4">
+                        <label for="subjects-select" class="form-label"><h5>1. Choisissez les sujets</h5></label>
+                        <select class="form-select" id="subjects-select" name="subjects" multiple required size="5">
+                            {% for subject in subjects %}
+                                <option value="{{ subject }}" selected>{{ subject }}</option>
+                            {% else %}
+                                <option disabled>Aucun sujet disponible.</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs sujets.</div>
+                    </div>
 
-            <div class="form-section">
-                <h2 class="section-title">2. Choisissez les types de test</h2>
-                <div class="options-container">
-                    {% for test_type in test_types %}
-                        <input type="checkbox" id="type_{{ test_type }}" name="test_types" value="{{ test_type }}" class="option-btn-radio" checked>
-                        <label for="type_{{ test_type }}" class="option-btn">{{ test_type }}</label>
-                    {% else %}
-                        <p>Aucun type de test disponible.</p>
-                    {% endfor %}
-                </div>
+                    <hr class="my-4">
+
+                    <div class="mb-4">
+                        <label for="types-select" class="form-label"><h5>2. Choisissez les types de test</h5></label>
+                        <select class="form-select" id="types-select" name="test_types" multiple required size="3">
+                            {% for test_type in test_types %}
+                                <option value="{{ test_type }}" selected>{{ test_type }}</option>
+                            {% else %}
+                                <option disabled>Aucun type disponible.</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs types.</div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="mb-4">
+                        <h5 class="mb-3">3. Nombre de questions</h5>
+                        <div class="btn-group" role="group" aria-label="Nombre de questions">
+                            <input type="radio" class="btn-check" name="quantity" id="num_10" value="10">
+                            <label class="btn btn-outline-primary" for="num_10">10</label>
+
+                            <input type="radio" class="btn-check" name="quantity" id="num_15" value="15">
+                            <label class="btn btn-outline-primary" for="num_15">15</label>
+                        
+                            <input type="radio" class="btn-check" name="quantity" id="num_20" value="20" checked>
+                            <label class="btn btn-outline-primary" for="num_20">20</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Générer le brouillon du Quiz</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <div class="form-section">
-                <h2 class="section-title">3. Nombre de questions</h2>
-                <div class="options-container">
-                    <input type="radio" id="num_10" name="quantity" value="10" class="option-btn-radio">
-                    <label for="num_10" class="option-btn">10</label>
-                    <input type="radio" id="num_20" name="quantity" value="20" class="option-btn-radio" checked>
-                    <label for="num_20" class="option-btn">20</label>
-                    <input type="radio" id="num_30" name="quantity" value="30" class="option-btn-radio">
-                    <label for="num_30" class="option-btn">30</label>
-                </div>
-            </div>
-
-            <button type="submit">Générer le brouillon du Quiz</button>
-        </form>
-         <a href="{{ url_for('choix') }}" class="back-link" style="color:white; margin-top:20px;">⬅ Retour</a>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

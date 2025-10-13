@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Query
 from pymongo import MongoClient
 from typing import List
-from app.models.questions_model import QuestionCreate
+from app.models.questions_model import QuestionCreate, Question
+import math
 
 router = APIRouter()
 
@@ -26,16 +27,14 @@ def get_uses():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/", response_model=List[dict])
+@router.get("/", response_model=List[Question])
 def get_questions(
     subjects: List[str] = Query(None),
     uses: List[str] = Query(None),
     quantity: int = 20
 ):
-    print(f"Filtres reçus - Sujets: {subjects}, Types: {uses}") # Ligne de débogage
     """
-    Récupère une liste de questions filtrées par sujet(s) et/ou type(s) de test,
-    et échantillonnées à une certaine quantité.
+    Récupère une liste de questions filtrées et la transforme pour correspondre au modèle.
     """
     try:
         match_filter = {}
@@ -49,22 +48,41 @@ def get_questions(
             {'$sample': {'size': quantity}}
         ]
         
-        questions = list(QUESTIONS_COLLECTION.aggregate(pipeline))
-        # Convertir ObjectId en str pour la sérialisation JSON
-        for q in questions:
-            q['_id'] = str(q['_id'])
-        return questions
+        questions_from_db = list(QUESTIONS_COLLECTION.aggregate(pipeline))
+        
+        # --- Transformation des données ---
+        transformed_questions = []
+        for q in questions_from_db:
+            # Créer le champ 'id' à partir de '_id' et supprimer l'ancien
+            q['id'] = str(q.pop('_id'))
+
+            # Créer le dictionnaire de réponses
+            responses_dict = {}
+            for key in ['responseA', 'responseB', 'responseC', 'responseD']:
+                if key in q and isinstance(q[key], str):
+                    responses_dict[key[-1]] = q.pop(key) # .pop pour nettoyer
+            q['responses'] = responses_dict
+
+            # Nettoyer la remarque
+            if 'remark' not in q or not isinstance(q['remark'], str):
+                q['remark'] = ""
+
+            # Assurer que tous les champs du modèle sont présents
+            for field in QuestionCreate.model_fields:
+                if field not in q:
+                    q[field] = "" # ou une autre valeur par défaut appropriée
+            
+            transformed_questions.append(q)
+
+        return transformed_questions
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-# ... (le reste de la fonction create_question)
 def create_question(question: QuestionCreate):
     """
     Ajoute une nouvelle question à la base de données.
-    
-    (Pour l'instant, cette route n'est pas protégée, mais elle le sera)
     """
     try:
         question_dict = question.model_dump()

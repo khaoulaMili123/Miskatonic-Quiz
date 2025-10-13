@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Résultats du Quiz{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg border-0 rounded-lg text-center">
+            <div class="card-header">
+                <h3 class="text-center font-weight-light my-4">Résultats du Quiz</h3>
+            </div>
+            <div class="card-body">
+                <h1 class="display-1">{{ score }} / {{ total }}</h1>
+                <p class="lead">C'est votre score pour le quiz "<strong>{{ quiz_title }}</strong>".</p>
+                
+                {% if score/total >= 0.8 %}
+                <div class="alert alert-success mt-4">Excellent travail !</div>
+                {% elif score/total >= 0.5 %}
+                <div class="alert alert-info mt-4">Pas mal, mais vous pouvez vous améliorer.</div>
+                {% else %}
+                <div class="alert alert-warning mt-4">Continuez à travailler, vous allez y arriver !</div>
+                {% endif %}
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small"><a href="{{ url_for('home') }}">Retour à l'accueil</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
