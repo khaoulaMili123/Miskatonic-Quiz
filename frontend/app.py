@@ -6,11 +6,18 @@ from SQLite.add_user import add_users, register_user  # fonctions pour login et 
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
+from datetime import datetime
+
 app = Flask(__name__)
 app.secret_key = "une_clef_secrete"
 
+# Rendre la date disponible dans tous les templates
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
+
 # Connexion MongoDB
-client = MongoClient("mongodb://isen:isen@localhost:27017/")
+client = MongoClient("mongodb://isen:isen@localhost:27017/?authSource=admin")
 db = client['quiz_db']
 questions_collection = db['questions']
 questionnaires_collection = db['questionnaires']
@@ -31,25 +38,46 @@ def home():
 
     return render_template('index.html')
 
+import requests
+
 # ---- PAGE CREER UN COMPTE ----
 @app.route('/inscription', methods=['GET', 'POST'])
 def inscription():
     if request.method == 'POST':
+        # ... (le reste de la logique de formulaire reste identique)
         nom_utilisateur = request.form.get('username')
-        identifiant = request.form.get('username')
         mot_de_passe = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
-        role_id = 2  # étudiant par défaut
 
         if mot_de_passe != confirm_password:
             flash("Les mots de passe ne correspondent pas")
             return redirect(url_for('inscription'))
 
-        success, message = register_user(nom_utilisateur, identifiant, mot_de_passe, role_id)
-        flash(message)
-        if success:
-            return redirect(url_for('home'))
-        return redirect(url_for('inscription'))
+        # Préparer les données pour l'API
+        user_data = {
+            "nom_utilisateur": nom_utilisateur,
+            "identifiant": nom_utilisateur, # Utilise le nom d'utilisateur comme identifiant
+            "mot_de_passe": mot_de_passe,
+            "role_id": 1 # enseignant par défaut
+        }
+
+        # Appeler l'API backend
+        try:
+            api_url = "http://localhost:8000/auth/register"
+            response = requests.post(api_url, json=user_data)
+
+            if response.status_code == 201: # 201 Created
+                flash("Inscription réussie ! Vous pouvez maintenant vous connecter.")
+                return redirect(url_for('home'))
+            else:
+                # Utiliser le message d'erreur de l'API
+                error_message = response.json().get('detail', "Une erreur est survenue.")
+                flash(error_message)
+                return redirect(url_for('inscription'))
+
+        except requests.exceptions.ConnectionError:
+            flash("Erreur de connexion à l'API. Le serveur backend est-il démarré ?")
+            return redirect(url_for('inscription'))
 
     return render_template('create.html')
 
@@ -70,82 +98,108 @@ def add_quest():
         if test_type == "__new__":
             test_type = request.form.get("new_use")
 
-        question = request.form.get("question")
-        responses = {
-            "A": request.form.get("responseA"),
-            "B": request.form.get("responseB"),
-            "C": request.form.get("responseC"),
-            "D": request.form.get("responseD")
-        }
-        correct = request.form.get("correct")
-        remark = request.form.get("remark")
-
-        questions_collection.insert_one({
+        # Préparer le payload pour l'API
+        question_data = {
             "subject": subject,
             "use": test_type,
-            "question": question,
-            "responses": responses,
-            "correct": correct,
-            "remark": remark
-        })
+            "question": request.form.get("question"),
+            "responses": {
+                "A": request.form.get("responseA"),
+                "B": request.form.get("responseB"),
+                "C": request.form.get("responseC"),
+                "D": request.form.get("responseD")
+            },
+            "correct": request.form.get("correct"),
+            "remark": request.form.get("remark")
+        }
 
-        flash("Question ajoutée avec succès !")
+        # Appeler l'API backend
+        try:
+            api_url = "http://localhost:8000/questions"
+            # Note : Plus tard, nous ajouterons les headers d'authentification ici
+            response = requests.post(api_url, json=question_data)
+
+            if response.status_code == 201:
+                flash("Question ajoutée avec succès !")
+            else:
+                error_message = response.json().get('detail', "Une erreur API est survenue.")
+                flash(f"Erreur lors de l'ajout de la question: {error_message}")
+        
+        except requests.exceptions.ConnectionError:
+            flash("Erreur de connexion à l'API. Le serveur backend est-il démarré ?")
+        
         return redirect(url_for("add_quest"))
 
+    # La logique GET pour afficher les filtres reste la même
     subjects = questions_collection.distinct("subject")
     test_types = questions_collection.distinct("use")
     return render_template("ajoute_qst.html", subjects=subjects, test_types=test_types)
 
+# ---- PAGE LISTE DES QUIZ ----
+@app.route('/liste-quiz')
+def liste_quiz():
+    try:
+        api_url = "http://localhost:8000/quizzes"
+        response = requests.get(api_url)
+        response.raise_for_status()
+        quizzes = response.json()
+        return render_template("liste_quiz.html", quizzes=quizzes)
+    except requests.exceptions.RequestException as e:
+        return redirect(url_for('choix'))
+
+# ---- PAGE VISUALISER UN QUIZ ----
+@app.route('/visualiser_quiz/<quiz_id>')
+def visualiser_quiz(quiz_id):
+    try:
+        api_url = f"http://localhost:8000/quizzes/{quiz_id}"
+        response = requests.get(api_url)
+        response.raise_for_status()
+        quiz = response.json()
+        return render_template("visualiser_quiz.html", quiz=quiz)
+    except requests.exceptions.RequestException as e:
+        flash(f"Impossible de charger le quiz: {e}")
+        return redirect(url_for('liste_quiz'))
+
+
 # ---- PAGE ACCEDER AU GENERATEUR ----
-@app.route('/acceder', methods=['GET', 'POST'])
+@app.route('/acceder', methods=['GET'])
 def acceder():
-    if request.method == 'GET':
-        subjects = questions_collection.distinct("subject")
-        questions_by_subject = {}
-        for subj in subjects:
-            questions = list(questions_collection.find({"subject": subj}))
-            questions_by_subject[subj] = questions
-        return render_template("generer_quiz.html", subjects=subjects, questions_by_subject=questions_by_subject)
+    try:
+        subjects_response = requests.get("http://localhost:8000/questions/subjects")
+        uses_response = requests.get("http://localhost:8000/questions/uses")
+        subjects_response.raise_for_status()
+        uses_response.raise_for_status()
+        subjects = subjects_response.json()
+        test_types = uses_response.json()
+        if not subjects or not test_types:
+            flash("L\'API a retourné des listes vides pour les sujets ou les types. La base de données est-elle peuplée ?", "warning")
+        return render_template("generer_quiz.html", subjects=subjects, test_types=test_types)
+    except requests.exceptions.RequestException as e:
+        flash(f"ERREUR CRITIQUE: Impossible de contacter l\'API. Vérifiez que le serveur backend (uvicorn) est bien lancé. Détails: {e}", "error")
+        return render_template("generer_quiz.html", subjects=[], test_types=[])
 
-    # POST → créer le quiz
-    selected_ids = request.form.getlist('selected_questions')
-    quiz_title = request.form.get('quiz_title', 'Quiz sans titre')
-
-    if not selected_ids:
-        flash("Veuillez sélectionner au moins une question.")
+# ---- PAGE DU QUIZ ----
+@app.route('/quiz', methods=['POST'])
+def quiz():
+    selected_subjects = request.form.getlist('subjects')
+    selected_types = request.form.getlist('test_types')
+    quantity = request.form.get('quantity', 20)
+    params = {'quantity': quantity, 'subjects': selected_subjects, 'uses': selected_types}
+    try:
+        api_url = "http://localhost:8000/questions"
+        response = requests.get(api_url, params=params)
+        if response.status_code != 200:
+            flash(f"ERREUR: L\'API a répondu avec un code d\'erreur {response.status_code}. Réponse: {response.text}", "error")
+            return redirect(url_for('acceder'))
+        filtered_questions = response.json()
+        if not filtered_questions:
+            flash("INFO: Aucun quiz ne correspond à ces filtres. Essayez d\'être moins spécifique.", "warning")
+            return redirect(url_for('acceder'))
+        return render_template("quiz.html", questions=filtered_questions, title="Affiner le Quiz")
+    except requests.exceptions.RequestException as e:
+        flash(f"ERREUR CRITIQUE: Impossible de contacter l\'API. Vérifiez que le serveur backend (uvicorn) est bien lancé. Détails: {e}", "error")
         return redirect(url_for('acceder'))
 
-    selected_questions = []
-    for qid in selected_ids:
-        q = questions_collection.find_one({"_id": ObjectId(qid)})
-        if q:
-            selected_questions.append({
-                "subject": q['subject'],
-                "question": q['question'],
-                "all_responses": list(q['responses'].values()),
-                "correct_responses": q['correct'].split(",")  # ex: "A,B"
-            })
-
-    questionnaires_collection.insert_one({
-        "title": quiz_title,
-        "questions": selected_questions
-    })
-    flash(f"Quiz '{quiz_title}' créé avec {len(selected_questions)} questions !")
-
-    return render_template("visualiser_quiz.html", quiz_title=quiz_title, questions=selected_questions)
-
-# ---- PAGE SELECTION DE QUESTIONS (filtres) ----
-@app.route('/selection', methods=['POST'])
-def selection():
-    categories = request.form.getlist('categorie')
-    nombre = request.form.get('nombre')
-
-    if not categories or not nombre:
-        flash("Veuillez choisir au moins une catégorie et un nombre de questions.")
-        return redirect(url_for('acceder'))
-
-    # Ici tu peux filtrer les questions depuis MongoDB et retourner le quiz filtré
-    return redirect(url_for('acceder'))
 
 if __name__ == '__main__':
     app.run(debug=True)

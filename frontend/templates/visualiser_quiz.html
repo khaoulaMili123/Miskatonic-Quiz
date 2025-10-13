@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.title }} - Miskatonic University</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo Miskatonic University" class="logo" id="logo-img">
+            <h1>{{ quiz.title }}</h1>
+            <p class="subtitle">Prêt à être distribué.</p>
+        </div>
+
+        <div id="questions-list">
+            {% for question in quiz.questions %}
+            <div class="question-card" id="card-{{ question._id }}">
+                <div class="question-header">
+                    <div class="question-counter">Question {{ loop.index }}</div>
+                </div>
+                <h2 class="question-text">{{ question.question }}</h2>
+                <div class="options-grid">
+                    {% for key, value in question.responses.items() %}
+                    <div class="option-display {% if key in question.correct %}correct-answer{% endif %}">
+                        <strong class="option-key">{{ key }}</strong>
+                        <span class="option-value">{{ value }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="toolbar" style="justify-content: center; margin-top: 30px;">
+            <button onclick="window.print();" class="submit-btn">Imprimer le Quiz</button>
+        </div>
+        <a href="{{ url_for('liste_quiz') }}" class="back-link">⬅ Retour à la liste</a>
+    </div>
+
+    <style media="print">
+        /* Styles pour l'impression */
+        body { background: none; color: black; padding: 0; }
+        .toolbar, .back-link, #logo-img { display: none; }
+        .quiz-container { max-width: 100%; box-shadow: none; border: none; }
+        .question-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+        .correct-answer { background-color: #e0e0e0 !important; border-left: 3px solid #888 !important; }
+    </style>
+</body>
+</html>

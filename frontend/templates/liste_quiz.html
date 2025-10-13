@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Quiz - Miskatonic University</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="quiz-container" style="max-width: 900px;">
+        <div class="quiz-header">
+            <img src="{{ url_for('static', filename='images/logo_univ.png') }}" alt="Logo Miskatonic University" class="logo">
+            <h1>Mes Quiz Enregistrés</h1>
+            <p class="subtitle">Cliquez sur un quiz pour le visualiser.</p>
+        </div>
+
+        <div class="quiz-list">
+            {% for quiz in quizzes %}
+            <a href="{{ url_for('visualiser_quiz', quiz_id=quiz._id) }}" class="list-item-link">
+                <div class="list-item">
+                    <span class="list-item-title">{{ quiz.title }}</span>
+                    <span class="list-item-arrow">→</span>
+                </div>
+            </a>
+            {% else %}
+            <p style="text-align: center; color: var(--muted-text);">Aucun quiz n'a été enregistré pour le moment.</p>
+            {% endfor %}
+        </div>
+
+        <a href="{{ url_for('choix') }}" class="back-link">⬅ Retour au menu</a>
+    </div>
+
+    <style>
+        .quiz-list { display: flex; flex-direction: column; gap: 15px; }
+        .list-item-link { text-decoration: none; }
+        .list-item {
+            background-color: var(--card-bg);
+            padding: 20px 25px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .list-item:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .list-item-title { font-weight: 600; color: var(--text-color); font-size: 1.1rem; }
+        .list-item-arrow { font-size: 1.5rem; color: var(--primary); }
+    </style>
+</body>
+</html>

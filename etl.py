@@ -33,7 +33,7 @@ def etl_quiz():
     df['correct_responses'] = df['correct_responses'].apply(lambda lst: [r for r in lst if str(r).strip() != ""])
 
     # Connexion MongoDB
-    client = MongoClient("mongodb://isen:isen@localhost:27017/")
+    client = MongoClient("mongodb://isen:isen@localhost:27017/?authSource=admin")
     db = client['quiz_db']
 
     # --- Collection questions ---

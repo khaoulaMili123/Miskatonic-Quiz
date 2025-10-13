@@ -13,13 +13,9 @@
         <div class="wrapper">
             <h1>Que souhaitez-vous faire ?</h1>
 
-            <button type="button" onclick="window.location.href='{{ url_for('add_quest') }}'">
-                Ajouter une ou plusieurs questions
-            </button>
-
-            <button type="button" onclick="window.location.href='{{ url_for('acceder') }}'">
-                Accéder au générateur de quiz
-            </button>
+            <a href="{{ url_for('add_quest') }}" class="choix-btn">Ajouter des questions</a>
+            <a href="{{ url_for('acceder') }}" class="choix-btn">Générer un Quiz</a>
+            <a href="{{ url_for('liste_quiz') }}" class="choix-btn">Voir mes quiz</a>
         </div>
     </div>
 
