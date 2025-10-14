@@ -12,11 +12,11 @@
             </div>
 
             <div id="questions-container">
-                <!-- Le premier bloc de question sert de modèle -->
                 <div class="card shadow-sm mb-4 question-block">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 question-title">Question 1</h5>
-                        <button type="button" class="btn-close delete-question-btn" title="Supprimer cette question"></button>
+                        <button type="button" class="btn-close delete-question-btn"
+                            title="Supprimer cette question"></button>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
@@ -31,7 +31,8 @@
                                     </select>
                                     <label for="subject">Sujet</label>
                                 </div>
-                                <input type="text" name="new_subject" placeholder="Nouveau sujet" class="form-control mt-2 d-none new-subject-input">
+                                <input type="text" name="new_subject" placeholder="Nouveau sujet"
+                                    class="form-control mt-2 d-none new-subject-input">
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
@@ -44,12 +45,14 @@
                                     </select>
                                     <label for="use">Type de test</label>
                                 </div>
-                                <input type="text" name="new_use" placeholder="Nouveau type de test" class="form-control mt-2 d-none new-use-input">
+                                <input type="text" name="new_use" placeholder="Nouveau type de test"
+                                    class="form-control mt-2 d-none new-use-input">
                             </div>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="question" placeholder="Tapez votre question ici..." style="height: 100px" required></textarea>
+                            <textarea class="form-control" name="question" placeholder="Tapez votre question ici..."
+                                style="height: 100px" required></textarea>
                             <label for="question">Question</label>
                         </div>
 
@@ -57,13 +60,15 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="responseA" placeholder="Réponse A" required>
+                                    <input type="text" class="form-control" name="responseA" placeholder="Réponse A"
+                                        required>
                                     <label>Réponse A</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" name="responseB" placeholder="Réponse B" required>
+                                    <input type="text" class="form-control" name="responseB" placeholder="Réponse B"
+                                        required>
                                     <label>Réponse B</label>
                                 </div>
                             </div>
@@ -87,7 +92,8 @@
                         </div>
 
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" name="remark" placeholder="Ajoutez un commentaire..." style="height: 80px"></textarea>
+                            <textarea class="form-control" name="remark" placeholder="Ajoutez un commentaire..."
+                                style="height: 80px"></textarea>
                             <label for="remark">Remarque (optionnel)</label>
                         </div>
                     </div>
@@ -95,63 +101,63 @@
             </div>
 
             <div class="d-flex justify-content-center mb-4">
-                <button type="button" id="add-question-btn" class="btn btn-secondary">➕ Ajouter une autre question</button>
+                <button type="button" id="add-question-btn" class="btn btn-secondary">➕ Ajouter une autre
+                    question</button>
             </div>
         </div>
     </div>
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
 
-    function updateQuestionTitles() {
-        const allBlocks = document.querySelectorAll('.question-block');
-        allBlocks.forEach((block, index) => {
-            block.querySelector('.question-title').textContent = `Question ${index + 1}`;
-        });
-    }
+        function updateQuestionTitles() {
+            const allBlocks = document.querySelectorAll('.question-block');
+            allBlocks.forEach((block, index) => {
+                block.querySelector('.question-title').textContent = `Question ${index + 1}`;
+            });
+        }
 
-    function attachEventListeners(questionBlock) {
-        // Gérer la suppression de la question
-        const deleteBtn = questionBlock.querySelector('.delete-question-btn');
-        deleteBtn.addEventListener('click', () => {
-            questionBlock.remove();
+        function attachEventListeners(questionBlock) {
+            // Gérer la suppression de la question
+            const deleteBtn = questionBlock.querySelector('.delete-question-btn');
+            deleteBtn.addEventListener('click', () => {
+                questionBlock.remove();
+                updateQuestionTitles();
+            });
+
+            // Gérer l'affichage des champs "nouveau"
+            const subjectSelect = questionBlock.querySelector('.subject-select');
+            const newSubjectInput = questionBlock.querySelector('.new-subject-input');
+            subjectSelect.addEventListener('change', function () {
+                newSubjectInput.classList.toggle('d-none', this.value !== '__new__');
+            });
+
+            const useSelect = questionBlock.querySelector('.use-select');
+            const newUseInput = questionBlock.querySelector('.new-use-input');
+            useSelect.addEventListener('change', function () {
+                newUseInput.classList.toggle('d-none', this.value !== '__new__');
+            });
+        }
+
+        const addQuestionBtn = document.getElementById('add-question-btn');
+        const questionsContainer = document.getElementById('questions-container');
+
+        // Attacher les événements au premier bloc existant
+        document.querySelectorAll('.question-block').forEach(attachEventListeners);
+
+        addQuestionBtn.addEventListener('click', () => {
+            const firstBlock = document.querySelector('.question-block');
+            const newBlock = firstBlock.cloneNode(true);
+
+            newBlock.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            newBlock.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+            newBlock.querySelectorAll('.d-none').forEach(el => el.classList.add('d-none')); // S'assurer que les champs cachés le restent
+
+            questionsContainer.appendChild(newBlock);
+            attachEventListeners(newBlock);
             updateQuestionTitles();
         });
-
-        // Gérer l'affichage des champs "nouveau"
-        const subjectSelect = questionBlock.querySelector('.subject-select');
-        const newSubjectInput = questionBlock.querySelector('.new-subject-input');
-        subjectSelect.addEventListener('change', function() {
-            newSubjectInput.classList.toggle('d-none', this.value !== '__new__');
-        });
-
-        const useSelect = questionBlock.querySelector('.use-select');
-        const newUseInput = questionBlock.querySelector('.new-use-input');
-        useSelect.addEventListener('change', function() {
-            newUseInput.classList.toggle('d-none', this.value !== '__new__');
-        });
-    }
-
-    const addQuestionBtn = document.getElementById('add-question-btn');
-    const questionsContainer = document.getElementById('questions-container');
-
-    // Attacher les événements au premier bloc existant
-    document.querySelectorAll('.question-block').forEach(attachEventListeners);
-
-    addQuestionBtn.addEventListener('click', () => {
-        const firstBlock = document.querySelector('.question-block');
-        const newBlock = firstBlock.cloneNode(true);
-        
-        // Nettoyer les valeurs du nouveau bloc
-        newBlock.querySelectorAll('input, textarea').forEach(input => input.value = '');
-        newBlock.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
-        newBlock.querySelectorAll('.d-none').forEach(el => el.classList.add('d-none')); // S'assurer que les champs cachés le restent
-
-        questionsContainer.appendChild(newBlock);
-        attachEventListeners(newBlock);
-        updateQuestionTitles();
     });
-});
 </script>
 {% endblock %}

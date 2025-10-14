@@ -8,20 +8,20 @@ L'application est composée d'un serveur API et d'un client web, offrant une arc
 
 Le projet s'articule autour de deux services principaux et de deux bases de données distinctes :
 
--   **Backend (Serveur API)** : Une API RESTful développée avec **FastAPI** (Python). Elle gère toute la logique métier, l'authentification et les interactions avec les bases de données.
+-   **Backend (Serveur API)** : Une API RESTful développée avec **FastAPI** (Python). Elle gère toute la logique métier et les interactions avec les bases de données.
 -   **Frontend (Client Web)** : Une application web développée avec **Flask** (Python). Elle sert d'interface utilisateur (IHM) et consomme les données fournies par l'API backend.
 -   **Base de Données (Questions)** : **MongoDB** est utilisé pour stocker la collection de questions et les questionnaires générés, offrant flexibilité pour des documents complexes.
 -   **Base de Données (Utilisateurs)** : **SQLite** est utilisé pour gérer les utilisateurs, leurs identifiants et leurs mots de passe hachés.
 
 ## Fonctionnalités Implémentées
 
--   ✅ **Gestion des Utilisateurs** : Inscription des enseignants (mots de passe hachés avec bcrypt).
--   ✅ **Gestion des Questions** : Ajout de nouvelles questions à la base de données via une interface dédiée.
--   ✅ **Génération de Quiz** :
+-   **Gestion des Utilisateurs** : Inscription des enseignants (mots de passe hachés avec bcrypt).
+-   **Gestion des Questions** : Ajout de nouvelles questions à la base de données via une interface dédiée.
+-   **Génération de Quiz** :
     -   Interface de sélection pour filtrer les questions par sujet, type de test et quantité.
     -   Génération d'un "brouillon" de quiz basé sur les critères.
--   ✅ **Curation de Quiz** : Interface permettant de visualiser les questions sélectionnées, de supprimer celles qui ne conviennent pas et de nommer le quiz.
--   ✅ **Sauvegarde et Visualisation** :
+-   **Curation de Quiz** : Interface permettant de visualiser les questions sélectionnées, de supprimer celles qui ne conviennent pas et de nommer le quiz.
+-   **Sauvegarde et Visualisation** :
     -   Enregistrement du quiz finalisé dans la base de données.
     -   Liste de tous les quiz enregistrés.
     -   Visualisation détaillée et page prête à l'impression pour chaque quiz.

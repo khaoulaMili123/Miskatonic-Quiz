@@ -7,7 +7,6 @@ from pydantic import BaseModel
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from app.models.user_model import UserCreate
-# Renommage pour plus de clarté
 from SQLite.add_user import register_user as register_user_in_db, add_users as login_user_in_db
 
 router = APIRouter()

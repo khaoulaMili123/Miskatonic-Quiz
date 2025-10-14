@@ -31,6 +31,10 @@ def etl_quiz():
 
     df['all_responses'] = df['all_responses'].apply(lambda lst: [r for r in lst if str(r).strip() != ""])
     df['correct_responses'] = df['correct_responses'].apply(lambda lst: [r for r in lst if str(r).strip() != ""])
+        # dictionnaire de correction : clé = version erronée, valeur = version correcte
+    # subject_corrections = {
+    #     "Sytèmes distribués": "Systèmes distribués"
+
 
     # Connexion MongoDB
     client = MongoClient("mongodb://isen:isen@localhost:27017/?authSource=admin")
