@@ -73,7 +73,7 @@ Les deux communiquent via des requêtes HTTP (`requests`).
 │
 ├── etl.py                       # Script ETL : import CSV → MongoDB
 ├── docker-compose.yml           # Configuration Docker (API, MongoDB, frontend)
-├── README.md                    # Ce fichier 🙂
+├── README.md                    # Ce fichier 
 └── requirements.txt             # Dépendances Python
 ```
 
